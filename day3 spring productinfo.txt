@@ -1,0 +1,12 @@
+@Repository
+public interface ProductInfo extends JpaRepository<Product , Integer>
+{
+
+    Product findByName(String string);
+
+    List<Product> findByNameContainsIgnoreCaseOrPlaceContainsIgnoreCaseOrTypeContainsIgnoreCase(String string, String string1, String string2);
+
+    List<Product> findByPlaceIgnoreCase(String string);
+
+    List<Product> findByWarrantyLessThan(int year);
+}
