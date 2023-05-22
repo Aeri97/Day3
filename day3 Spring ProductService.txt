@@ -1,0 +1,134 @@
+package com.kota.ProjectSpring;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Example;
+
+
+import java.time.Year;
+import java.util.List;
+import java.util.Optional;
+
+@Service                 // this annotation is used to tell spring framework to create an object
+public class ProductService {
+//   // List<Product> products = new ArrayList<>();
+//   // ProductDB db =new ProductDB();
+//    public void addProduct(Product p)
+//    {
+//                           //instead of ading the products using this we use database to add product by using jdbc
+//       // products.add(p);
+//        db.save(p);        // but this alone doesnt work so wee create a new class ProductDB
+//                           // to save it we have to connect to dtaabase using jdbc
+//    }
+//
+//    public List<Product> getAllProducts()
+//    {
+//       // return products;                // lets not get the products from list
+//        return db.getAll();               // we have to create getall method in productDB
+//    }
+
+    @Autowired
+    ProductInfo db;
+
+    public List<Product> getAllProducts() {
+        return db.findAll();
+    }
+
+
+//
+//    public Product getProduct(String name)
+//    {
+//      //  for(Product p : products)
+//       // {
+//       //     if(p.getName().equals(name))
+//      //          return p;
+//      //  }
+//
+//      //  return null;
+//        return db.getprod();
+     //  }
+           public Product getProduct(String string)
+           {
+               return db.findByName(string);
+              }
+
+
+//
+//
+//
+//
+//    public List<Product> getProductWithText(String text) {
+//        String str = text.toLowerCase();
+//        List<Product> prods = new ArrayList<>();
+//
+//        for(Product p : products){
+//            String name = p.getName().toLowerCase();
+//            String type = p.getType().toLowerCase();
+//            String place = p.getPlace().toLowerCase();
+//            if(name.contains(str) || type.contains(str) || place.contains(str))
+//                prods.add(p);
+//        }
+//        return prods;
+              public List<Product> getProductWithText(String string) {
+                  List<Product> products = db.findByNameContainsIgnoreCaseOrPlaceContainsIgnoreCaseOrTypeContainsIgnoreCase(string, string, string);
+                  return products;
+              }
+
+
+
+
+//
+//    }
+//     public List<Product> getProductWithPlace(String string)
+//        {
+//          String str = string.toLowerCase();
+//          List<Product> prod = new ArrayList<>();
+//         for(Product p : products)
+//         {
+//         String name = p.getName().toLowerCase();
+//         String type = p.getType().toLowerCase();
+//         String place =p.getPlace().toLowerCase();
+//         if(name.contains(str) || type.contains(str) || place.contains(str))
+//         prod.add(p);
+//        }
+//        return prod;
+//      }
+//
+//  //  public List<Product> getProductWithPlace(String string) {
+//  //      String str = string.toLowerCase();
+//  //      return products.stream()
+//  //              .filter(p -> p.getName().toLowerCase().contains(str)
+//   //                     || p.getType().toLowerCase().contains(str)
+//  //                      || p.getPlace().toLowerCase().contains(str))
+//  //              .collect(Collectors.toList());
+//  //  }
+//
+                      public List<Product> getProductWithPlace(String string) {
+                         return db.findByPlaceIgnoreCase(string);
+                         }
+
+
+
+//
+//    public List<Product> getProductWithWarranty()
+//    {
+//        List<Product> prd = new ArrayList<>();
+//        for(Product p : products)
+//        {
+//            if( p.getWarranty() < 2022 )
+//            {
+//                prd.add(p);
+//            }
+//        }
+//        return prd;
+//    }
+            public List<Product> getProductWithWarranty()
+            {
+                 int year = Year.now().getValue();
+                   List<Product> products = db.findByWarrantyLessThan(year);
+                   return products;
+                }
+//
+
+}
+
